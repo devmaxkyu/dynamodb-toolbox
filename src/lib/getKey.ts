@@ -17,12 +17,11 @@ export default (DocumentClient) => (data,schema,partitionKey,sortKey) => {
 
   // Intialize validate type
   let validateType = validateTypes(DocumentClient)
-
   let pk = data[partitionKey] ||
       error(`'${partitionKey}'${schema[partitionKey].alias ? ` or '${schema[partitionKey].alias}'` : ''} is required`)
 
-  let sk = sortKey === null || data[sortKey] ||
-      error(`'${sortKey}'${schema[sortKey].alias ? ` or '${schema[sortKey].alias}'` : ''} is required`)
+  let sk = sortKey !== null? data[sortKey] || 
+      error(`'${sortKey}'${schema[sortKey].alias ? ` or '${schema[sortKey].alias}'` : ''} is required`) : null
 
   return Object.assign(
     { [partitionKey]: transformAttr(schema[partitionKey],validateType(schema[partitionKey],partitionKey,pk,data),data) },

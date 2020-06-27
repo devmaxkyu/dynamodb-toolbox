@@ -19,7 +19,7 @@ export default (attributes,track,nested) => {
       return Object.assign(acc,parseCompositeKey(field,attributes[field],track,attributes))
     } else {
       return !attributes[field].type || validTypes.includes(attributes[field].type) ?
-        Object.assign(acc,parseMapping(field,attributes[field],track,nested))
+        Object.assign(acc,parseMapping(field,attributes[field],track))
         : typeError(field)
     }
   },{})

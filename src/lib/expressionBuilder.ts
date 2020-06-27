@@ -34,9 +34,10 @@ const buildExpression = (exp,table,entity,group=0,level=0) => {
 
       // If no logic at this level, capture from sub clause
       logic = logic ? logic : sub.logic
+      
 
       // Concat to expression and merge names and values
-      expression += `${id > 0 ? ` ${sub.logic} `: ''}(${sub.expression})`
+      expression += `${+id > 0 ? ` ${sub.logic} `: ''}(${sub.expression})`
       names = Object.assign(names,sub.names)
       values = Object.assign(values,sub.values)
       group = sub.group
@@ -54,7 +55,7 @@ const buildExpression = (exp,table,entity,group=0,level=0) => {
       const clause = parseClause(clauses[id],group,table)
       
       // Concat to expression and merge names and values
-      expression += `${id > 0 ? ` ${clause.logic} `: ''}${clause.clause}`
+      expression += `${+id > 0 ? ` ${clause.logic} `: ''}${clause.clause}`
       names = Object.assign(names,clause.names)
       values = Object.assign(values,clause.values)
 

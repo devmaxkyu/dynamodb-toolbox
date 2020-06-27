@@ -30,15 +30,15 @@ export default (attributes,table={},entity,type=false) => {
 
   // Check that table is valid and contains attributes
   if (
-    table.constructor.name !== 'Table' 
-    || !table.Table 
-    || Object.keys(table.Table.attributes).length == 0
+     table.constructor.name !== 'Table' 
+    || !table.hasOwnProperty('Table')
+    || Object.keys(table['Table'].attributes).length == 0
   ) {
     error(`Tables must be valid and contain attributes`)
   } // end check table
 
   // Add entityField if exists
-  if (type && table.Table.entityField) attrs.push(table.Table.entityField)
+  if (type && table['Table'].entityField) attrs.push(table['Table'].entityField)
 
   // Default collectors
   const names = {}
@@ -52,7 +52,7 @@ export default (attributes,table={},entity,type=false) => {
     if (typeof attrs[i] === 'string') {
 
       // Check single attribute and merge results
-      const attr = checkAttribute(attrs[i],(entity ? table[entity].schema.attributes : table.Table.attributes))
+      const attr = checkAttribute(attrs[i],(entity ? table[entity].schema.attributes : table['Table'].attributes))
       if (!Object.values(names).includes(attr)) {
         names[`#proj${++index}`] = attr
         tableAttrs.push(attrs[i])

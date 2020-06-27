@@ -194,7 +194,7 @@ class Entity<Schema = never, HiddenKeys extends Partial<string> = never> {
   async get(item = {}, options: FIXME = {}, params = {}) {
     // Generate the payload
     const payload = this.getParams(item, options, params)
-
+    
     // If auto execute enabled
     if (options.execute || (this.autoExecute && options.execute !== false)) {
       const result = await this.DocumentClient.get(payload).promise()
@@ -411,6 +411,14 @@ class Entity<Schema = never, HiddenKeys extends Partial<string> = never> {
         ConditionExpression = expression
       } // end if names
     } // end if filters
+
+    // Checks for partition and sort keys
+    getKey(this.DocumentClient)(
+      data,
+      schema.attributes,
+      schema.keys.partitionKey,
+      schema.keys.sortKey
+    )    
 
     // Generate the payload
     const payload = Object.assign(
@@ -855,6 +863,7 @@ class Entity<Schema = never, HiddenKeys extends Partial<string> = never> {
       const result = await this.DocumentClient.put(payload).promise()
       // If auto parse enable
       if (options.parse || (this.autoParse && options.parse !== false)) {
+
         return Object.assign(
           result,
           result.Attributes
